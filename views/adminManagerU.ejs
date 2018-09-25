@@ -1,0 +1,110 @@
+<%- include('partials/aboveContent.ejs'); %>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Users Manger
+        <p class="fa fa-fw fa-tripadvisor"></p> 
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="/admin/manager"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tables</a></li>
+        <li class="active">Data tables</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <a class = "btn" href="/admin/manager/user/add" >  <div style="font-size: 30px" class="fa fa-fw fa-user-plus"></div>  </a>
+            </div>
+            <!-- /.box-header -->
+           <!-- *************************************** -->
+
+           <div class="box-body">
+              <table id="paging" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                      <th >STT</th>
+                      <th>ID</th>
+                      <th>User Name</th>
+                      <th>Password</th>
+                      <th>Email</th>
+                      <th colspan="3" >Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <% for (var i = 0; i < users.length ;  i++) { %>
+                      <tr>
+                        <%  var uid1 = users[i]._id; %>
+                        <td><%= ((i+1) + (page-1)*10) %></td>
+                        <td><%= users[i]._id %></td>
+                        <td><%= users[i].username %></td>
+                        <td><%= users[i].password %></td>
+                        <td><%= users[i].email %></td>
+                       
+                        <td><a  href="/admin/manager/user/update/<%=users[i].id %>"><img style = "width: 20px; height: 20px"src="/update.png" alt="/image_update"></a></td> 
+                        <td><a  class = "my_link" href="/admin/manager/user/delete/<%=users[i].id %>" onclick="return confirm('Are you sure you want to delete?');"><img style = "width: 25px; height: 25px" src="/delete.png" alt=""></a></td> 
+                        <td><a class  = "my_link" href="/admin/manager/user/detail/<%=users[i].id %>"><img style = "width: 20px; height: 20px" src="/detail.png" alt=""></a> </td> 
+                       
+                    </tr>     
+                  <% } %>
+            
+                </tbody>
+              </table>
+              <!-- ** -->
+             
+              <div class="container1" style = "float: right">
+                <% var pages  = Math.ceil(totalUser/10)%>
+                <% if (pages > 0) { %>
+                  <ul class="pagination text-center">
+                      <% if (page == 1) { %>
+                          <li class="disabled"><a>Previous</a></li>
+                      <% } else { %>
+                          <li><a href="/admin/manager/user/<%=page-1%>">Previous</a></li>
+                      <% } %>
+                      <% var j = (Number(page) > 4 ? Number(page) - 3 : 1) %>
+                      <% if (j !== 1) { %>
+                          <li class="disabled"><a>...</a></li>
+                      <% } %>
+                      <% for (; j <= (Number(page) + 3) && j <= pages; j++) { %>
+                          <% if (j == page) { %>
+                              <li class="active"><a><%= j %></a></li>
+                          <% } else { %>
+                              <li><a href="/admin/manager/user/<%= j %>"><%= j %></a></li>
+                          <% } %>
+                          <% if (j == Number(page) + 3 && j < pages) { %>
+                              <li class="disabled"><a>...</a></li>
+                          <% } %>
+                      <% } %>
+                      <% if (page == pages) { %>
+                          <li class="disabled"><a>Next</a></li>
+                      <% } else { %>
+                        <li><a href="/admin/manager/user/<%=(Number(page)+1)%>">Next</a></li>
+                      <% } %>
+                  </ul>
+                <% } %>
+                </div>
+
+              <p style = "font-weight: lighter;margin-top: 26px;">Showing <%= (1 + (page-1)*10) %> to <%= (users.length + (page-1)*10) %> of  <%=totalUser%>  entries</p>
+              <b>Page current: <%=page%></b>
+            </div>
+
+
+
+            <!-- **********************************88 -->
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+    <%- include('partials/underContent.ejs'); %>
